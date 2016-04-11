@@ -121,6 +121,8 @@ class MasterViewController: UITableViewController, ModelDelegate, CLLocationMana
   }
   
   func errorUpdating(error: NSError) {
+    let message = error.localizedDescription
+    let alert = UIAlertView(title: "Error Loading Establishements", message: message, delegate: nil, cancelButtonTitle: "Ok")
   }
   
   //#pragma mark location stuff & delegate
