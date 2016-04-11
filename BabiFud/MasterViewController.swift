@@ -116,6 +116,8 @@ class MasterViewController: UITableViewController, ModelDelegate, CLLocationMana
   //#pragma mark model delegate
   
   func modelUpdated() {
+    refreshControl?.endRefreshing()
+    tableView.reloadData()
   }
   
   func errorUpdating(error: NSError) {
