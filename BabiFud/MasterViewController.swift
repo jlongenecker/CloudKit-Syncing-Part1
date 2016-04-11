@@ -44,7 +44,8 @@ class MasterViewController: UITableViewController, ModelDelegate, CLLocationMana
 
     if let split = self.splitViewController {
       let controllers = split.viewControllers
-      self.detailViewController = controllers[controllers.endIndex-1].topViewController as? DetailViewController
+      //self.detailViewController = controllers[controllers.endIndex-1].topViewController as? DetailViewController
+      self.detailViewController = controllers[controllers.endIndex-1] as? DetailViewController
     }
     
     setupLocationManager()
@@ -122,7 +123,8 @@ class MasterViewController: UITableViewController, ModelDelegate, CLLocationMana
   
   func errorUpdating(error: NSError) {
     let message = error.localizedDescription
-    let alert = UIAlertView(title: "Error Loading Establishements", message: message, delegate: nil, cancelButtonTitle: "Ok")
+    let alert = UIAlertView(title: "Error Loading Establishements", message: message, delegate: nil, cancelButtonTitle: "ok")
+    alert.show()
   }
   
   //#pragma mark location stuff & delegate
@@ -149,7 +151,7 @@ class MasterViewController: UITableViewController, ModelDelegate, CLLocationMana
   }
   
   func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    if let loc = locations.last as? CLLocation {
+    if let loc = locations.last {
       model.fetchEstablishments(loc, radiusInMeters: 3000)
     }
   }
