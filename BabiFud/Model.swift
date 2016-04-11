@@ -89,71 +89,66 @@ class Model {
   
   func fetchEstablishments(location:CLLocation,
                            radiusInMeters:CLLocationDistance) {
-    //replace this stub
-    dispatch_async(dispatch_get_main_queue()) {
-      self.delegate?.modelUpdated()
-      print("model updated")
-    }
-  }
     
-    func fetchEstablishments(location: CLLocation, radiusInMeters:CLLocationDistance) {
-        //1 
-        let radiusInKilometers = radiusInMeters / 1000.0
-        // 2 
-        let locationPredicate = NSPredicate(format: "distanceToLocation:fromLocation:(%K,%@) > %f", "Location", location, radiusInKilometers)
-        // 3
-        let query = CKQuery(recordType: EstablishmentType, predicate: locationPredicate)
-        
-        publicDB.performQuery(query, inZoneWithID: nil) {
-            results, error in
-            if error != nil {
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.delegate?.errorUpdating(error)
-                    return
-                }
-            }  else {
-                self.items.removeAll(keepCapacity: true)
-                for record in results {
-                    let establishment = Establishment(record: record as! CKRecord, database: self.publicDB)
-                    self.items.append(establishment)
-                }
-                
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.delegate?.modelUpdated()
-                    return
-                }
+    //1
+    let radiusInKilometers = radiusInMeters / 1000.0
+    // 2
+    let locationPredicate = NSPredicate(format: "distanceToLocation:fromLocation:(%K,%@) > %f", "Location", location, radiusInKilometers)
+    // 3
+    let query = CKQuery(recordType: EstablishmentType, predicate: locationPredicate)
+    
+    publicDB.performQuery(query, inZoneWithID: nil) {
+        results, error in
+        if error != nil {
+            dispatch_async(dispatch_get_main_queue()) {
+                self.delegate?.errorUpdating(error)
+                return
+            }
+        }  else {
+            self.items.removeAll(keepCapacity: true)
+            for record in results {
+                let establishment = Establishment(record: record as! CKRecord, database: self.publicDB)
+                self.items.append(establishment)
+            }
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                self.delegate?.modelUpdated()
+                return
             }
         }
     }
+    
+  }
+    
   
-//  func fetchEstablishments(location:      CLLocation,
-//                           radiusInMeters:CLLocationDistance,
-//                           completion:    (results:[Establishment]!, error:NSError!) -> ()) {
-//                            let radiusInKilometers = radiusInMeters / 1000.0 //1
-//                            //Apple Campus location = 37.33182, -122.03118
-//                            let location = CLLocation(latitude: 37.33182, longitude: -122.03118)
-//
-//      let locationPredicate = NSPredicate(format: "distanceToLocation:fromLocation:(%K,%@) < %f",
-//        "Location",
-//        location,
-//        radiusInKilometers) //2
-//      let query = CKQuery(recordType: EstablishmentType,
-//        predicate:  locationPredicate) //3
-//      publicDB.performQuery(query, inZoneWithID: nil) { //4
-//        results, error in
-//        var res = [Establishment]()
-//        if let records = results {
-//          for record in records {
-//            let establishment = Establishment(record: record , database:self.publicDB)
-//            res.append(establishment)
-//          }
-//        }
-//        
-//        dispatch_async(dispatch_get_main_queue()) {
-//          completion(results: res, error: error)
-//        }
-//      }
-//  }
+  func fetchEstablishments(location:      CLLocation,
+                           radiusInMeters:CLLocationDistance,
+                           completion:    (results:[Establishment]!, error:NSError!) -> ()) {
+                            let radiusInKilometers = radiusInMeters / 1000.0 //1
+                            //Apple Campus location = 37.33182, -122.03118
+                            let location = CLLocation(latitude: 37.33182, longitude: -122.03118)
+
+      let locationPredicate = NSPredicate(format: "distanceToLocation:fromLocation:(%K,%@) < %f",
+        "Location",
+        location,
+        radiusInKilometers) //2
+      let query = CKQuery(recordType: EstablishmentType,
+        predicate:  locationPredicate) //3
+      publicDB.performQuery(query, inZoneWithID: nil) { //4
+        results, error in
+        var res = [Establishment]()
+        if let records = results {
+          for record in records {
+            let establishment = Establishment(record: record , database:self.publicDB)
+            res.append(establishment)
+          }
+        }
+        
+        dispatch_async(dispatch_get_main_queue()) {
+          completion(results: res, error: error)
+        }
+      }
+  }
 
   // #pragma mark - Notes
   
