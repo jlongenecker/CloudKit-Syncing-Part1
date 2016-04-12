@@ -142,6 +142,39 @@ class DetailViewController: UITableViewController, UISplitViewControllerDelegate
   
   func saveRating(rating: NSNumber) {
     //replace this stub method
+    //1 
+    let ratingRecord = CKRecord(recordType: "Rating")
+    //2 
+    ratingRecord.setObject(rating, forKey: "Rating")
+    //3 
+    let ref = CKReference(record: self.detailItem.record, action: .DeleteSelf)
+    
+    //4
+    ratingRecord.setObject(ref, forKey: "Establishment")
+    
+    //5
+    Model.sharedInstance().userInfo.userID() {
+        userID, error in
+        if let userRecord = userID {
+            //6
+            let userRef = CKReference(recordID: userRecord, action: .None)
+            ratingRecord.setObject(userRef, forKey: "User")
+            //7
+            self.detailItem.database.saveRecord(ratingRecord) {
+                record, error in
+                if error != nil {
+                    print("error saving rating: (\(rating)")
+                } else {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.starRating.emptyColor = UIColor.yellowColor()
+                        self.starRating.solidColor = UIColor.yellowColor()
+                        self.starRating.setNeedsDisplay()
+                    }
+                }
+            }
+        }
+    }
+    
   }
   
   override func viewDidLoad() {
@@ -150,6 +183,9 @@ class DetailViewController: UITableViewController, UISplitViewControllerDelegate
     coverView.layer.cornerRadius = 10.0
    
     //add star rating block here
+    starRating.editingChangedBlock = {
+        rating in self.saveRating(rating)
+    }
   }
   
   override func viewWillAppear(animated: Bool)  {
