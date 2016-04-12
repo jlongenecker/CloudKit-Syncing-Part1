@@ -153,6 +153,38 @@ class Establishment : NSObject, MKAnnotation {
   
   func fetchRating(userRecord: CKRecordID!, completion: (rating: Double, isUser: Bool) -> ()) {
     //REPLACE THIS STUB
+    //1
+    let predicate = NSPredicate(format: "Establishment == %@", record)
+    //2
+    let query = CKQuery(recordType: "Rating", predicate: predicate)
+    database.performQuery(query, inZoneWithID: nil) {
+        results, error in
+        if error != nil {
+            completion(rating: 0, isUser: false)
+        } else {
+            let resultsArray = results as? NSArray
+            //3
+            if let resultsArray = resultsArray {
+                var rating = 0.0
+                var sum = 0.0
+                for item in resultsArray {
+                    print("\(item)")
+                    let currentItem = item.valueForKey("Rating") as? Double
+                    if let currentItem = currentItem {
+                        sum = sum + currentItem
+                    }
+                }
+                
+                if resultsArray.count != 0 {
+                    rating = sum / Double(resultsArray.count)
+                    completion(rating: rating, isUser: false)
+                } else {
+                    completion(rating: 0, isUser: false)
+                }
+                
+            }
+        }
+    }
     completion(rating: 0, isUser: false)
   }
 
