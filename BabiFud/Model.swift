@@ -89,6 +89,7 @@ class Model {
   
   func fetchEstablishments(location:CLLocation,
                            radiusInMeters:CLLocationDistance) {
+    print("Method called")
     
     //1
     let radiusInKilometers = radiusInMeters / 1000.0
@@ -107,7 +108,7 @@ class Model {
         }  else {
             self.items.removeAll(keepCapacity: true)
             for record in results! {
-                let establishment = Establishment(record: record as! CKRecord, database: self.publicDB)
+                let establishment = Establishment(record: record, database: self.publicDB)
                 self.items.append(establishment)
             }
             
