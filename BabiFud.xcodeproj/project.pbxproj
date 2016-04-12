@@ -39,7 +39,7 @@
 		27DA779D196724C6005FFA76 /* Establishment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DA779C196724C6005FFA76 /* Establishment.swift */; };
 		27DA779F196746E2005FFA76 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DA779E196746E2005FFA76 /* SettingsViewController.swift */; };
 		27DA77A1196756D9005FFA76 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DA77A0196756D9005FFA76 /* UserInfo.swift */; };
-		53F548CF1CBC2DD70046A9BA /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53F548CE1CBC2DD70046A9BA /* CloudKit.framework */; };
+		53F548D11CBD37250046A9BA /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53F548D01CBD37250046A9BA /* CloudKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,7 +109,7 @@
 		27DA779C196724C6005FFA76 /* Establishment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Establishment.swift; sourceTree = "<group>"; };
 		27DA779E196746E2005FFA76 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		27DA77A0196756D9005FFA76 /* UserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
-		53F548CE1CBC2DD70046A9BA /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		53F548D01CBD37250046A9BA /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,7 +125,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				27B38ED01977637200385025 /* UIWidgets.framework in Frameworks */,
-				53F548CF1CBC2DD70046A9BA /* CloudKit.framework in Frameworks */,
+				53F548D11CBD37250046A9BA /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,7 +185,7 @@
 		27DA776D19672452005FFA76 = {
 			isa = PBXGroup;
 			children = (
-				53F548CE1CBC2DD70046A9BA /* CloudKit.framework */,
+				53F548D01CBD37250046A9BA /* CloudKit.framework */,
 				27DA777819672452005FFA76 /* BabiFud */,
 				27B38EBC1977637200385025 /* UIWidgets */,
 				27DA777719672452005FFA76 /* Products */,

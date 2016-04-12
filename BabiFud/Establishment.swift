@@ -112,13 +112,28 @@ class Establishment : NSObject, MKAnnotation {
   
   var healthyChoice : Bool {
   get {
-    return record.objectForKey("HealthyOption").boolValue
+    let trueResult = 1
+    let newRecord = record.objectForKey("HealthyOption")
+    if let newRecord = newRecord {
+        let result = newRecord.isEqual(trueResult)
+        return result
+    } else {
+        return false
+    }
   }
   }
   
   var kidsMenu: Bool {
   get {
-    return record.objectForKey("KidsMenu").boolValue
+    let trueResult = 1
+    let newRecord = record.objectForKey("KidsMenu")
+    if let newRecord = newRecord {
+        let result = newRecord.isEqual(trueResult)
+        return result
+    } else {
+        return false
+    }
+ 
   }
   }
   
@@ -153,9 +168,9 @@ class Establishment : NSObject, MKAnnotation {
     //Intermediate Extension Point - with cursors
     database.performQuery(query, inZoneWithID: nil) { results, error in
       if error == nil {
-        self.assetCount = results.count
+        self.assetCount = results!.count
       }
-      completion(assets: results as! [CKRecord])
+      completion(assets: results! as [CKRecord])
     }
   }
   

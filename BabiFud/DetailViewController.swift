@@ -205,7 +205,8 @@ class DetailViewController: UITableViewController, UISplitViewControllerDelegate
     let fileArray: NSArray = fileManager.URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask)
     let fileURL = fileArray.lastObject?.URLByAppendingPathComponent(NSUUID().UUIDString).URLByAppendingPathExtension("jpg")
 
-    if let filePath = fileArray.lastObject?.path {
+    if let file = fileArray.lastObject as? NSURL {
+     let filePath = file.path
       if !fileManager.fileExistsAtPath(filePath!) {
         do {
           try fileManager.createDirectoryAtPath(filePath!, withIntermediateDirectories: true, attributes: nil)

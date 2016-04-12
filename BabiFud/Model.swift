@@ -61,12 +61,12 @@ class Model {
     publicDB.performQuery(query, inZoneWithID: nil) { results, error in
       if error != nil {
         dispatch_async(dispatch_get_main_queue()) {
-          self.delegate?.errorUpdating(error)
+          self.delegate?.errorUpdating(error!)
           print("error loading: \(error)")
         }
       } else {
         self.items.removeAll(keepCapacity: true)
-        for record in results {
+        for record in results! {
           let establishment = Establishment(record: record as! CKRecord, database:self.publicDB)
           self.items.append(establishment)
         }
@@ -93,7 +93,7 @@ class Model {
     //1
     let radiusInKilometers = radiusInMeters / 1000.0
     // 2
-    let locationPredicate = NSPredicate(format: "distanceToLocation:fromLocation:(%K,%@) > %f", "Location", location, radiusInKilometers)
+    let locationPredicate = NSPredicate(format: "distanceToLocation:fromLocation:(%K,%@) < %f", "Location", location, radiusInKilometers)
     // 3
     let query = CKQuery(recordType: EstablishmentType, predicate: locationPredicate)
     
@@ -101,12 +101,12 @@ class Model {
         results, error in
         if error != nil {
             dispatch_async(dispatch_get_main_queue()) {
-                self.delegate?.errorUpdating(error)
+                self.delegate?.errorUpdating(error!)
                 return
             }
         }  else {
             self.items.removeAll(keepCapacity: true)
-            for record in results {
+            for record in results! {
                 let establishment = Establishment(record: record as! CKRecord, database: self.publicDB)
                 self.items.append(establishment)
             }

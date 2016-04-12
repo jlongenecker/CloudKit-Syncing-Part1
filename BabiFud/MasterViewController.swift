@@ -44,7 +44,7 @@ class MasterViewController: UITableViewController, ModelDelegate, CLLocationMana
 
     if let split = self.splitViewController {
       let controllers = split.viewControllers
-      //self.detailViewController = controllers[controllers.endIndex-1].topViewController as? DetailViewController
+      //self.detailView@objc @objc Controller = controllers[controllers.endIndex-1].topViewController as? DetailViewController
       self.detailViewController = controllers[controllers.endIndex-1] as? DetailViewController
     }
     
@@ -56,9 +56,13 @@ class MasterViewController: UITableViewController, ModelDelegate, CLLocationMana
 
     //setup a refresh control
     refreshControl = UIRefreshControl()
-    refreshControl?.addTarget(model, action: "refresh", forControlEvents: .ValueChanged)
+    refreshControl?.addTarget(self, action: #selector(self.refreshTest), forControlEvents: .ValueChanged)
   }
   
+    func refreshTest() {
+        model.refresh()
+    }
+    
   // #pragma mark - Segues
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
