@@ -163,15 +163,49 @@ class Model {
   func fetchNote(establishment: Establishment,
                  completion:(note: String!, error: NSError!) ->()) {
                   //replace this stub
-    completion(note: nil, error: nil)
-  }
+    
+    //1 
+    let predicate = NSPredicate(format: "Establishment == %@", establishment.record)
+    let query = CKQuery(recordType: "Note", predicate: predicate)
+    
+    //2
+    privateDB.performQuery(query, inZoneWithID: nil) { results, error in
+        var note: String!
+        if let results = results {
+            if results.count > 0 {
+                //3
+                note = results[0].objectForKey("Note") as! String
+            }
+            completion(note: note, error: error)
+            }
+        }
+
+    }
+
   
   func addNote(note: String,
                establishment: Establishment!,
                completion: (error : NSError!)->()) {
+    //replace this stub
+    if establishment == nil {
+        return
+    }
+    
+    //1 
+    let noteRecord = CKRecord(recordType: "Note")
+    noteRecord.setObject(note, forKey: "Note")
+    
+    //2
+    let ref = CKReference(record: establishment.record, action: .DeleteSelf)
+    noteRecord.setObject(ref, forKey: "Establishment")
+    
+    //3
+    privateDB.saveRecord(noteRecord) { record, error in
+        dispatch_async(dispatch_get_main_queue()) {
+            completion(error: error)
+        }
+    }
 
-                //replace this stub
-    completion(error: nil)
   }
 }
 
