@@ -168,7 +168,6 @@ class Establishment : NSObject, MKAnnotation {
                 var rating = 0.0
                 var sum = 0.0
                 for item in resultsArray {
-                    print("\(item)")
                     let currentItem = item.valueForKey("Rating") as? Double
                     if let currentItem = currentItem {
                         sum = sum + currentItem
