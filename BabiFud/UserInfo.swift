@@ -34,18 +34,24 @@ class UserInfo {
   }
   
   func loggedInToICloud(completion : (accountStatus : CKAccountStatus, error : NSError!) -> ()) {
-    //replace this stub
+    container.accountStatusWithCompletionHandler() { status, error in
+        completion(accountStatus: status, error: error)
+    }
     completion(accountStatus: .CouldNotDetermine, error: nil)
   }
   
   func userID(completion: (userRecordID: CKRecordID!, error: NSError!)->()) {
+    //1
     if userRecordID != nil {
       completion(userRecordID: userRecordID, error: nil)
     } else {
+        //2
       self.container.fetchUserRecordIDWithCompletionHandler() {
         recordID, error in
+        //3
         if recordID != nil {
-          self.userRecordID = recordID
+          //4
+            self.userRecordID = recordID
         }
         completion(userRecordID: recordID, error: error)
       }
@@ -55,15 +61,31 @@ class UserInfo {
   func userInfo(recordID: CKRecordID!,
     completion:(userInfo: CKDiscoveredUserInfo!, error: NSError!)->()) {
       //replace this stub
-      completion(userInfo: nil, error: nil)
-  }
+    container.discoverUserInfoWithUserRecordID(recordID) { discoveredUserInfo, error in
+        completion(userInfo: discoveredUserInfo, error: error)
+        }
+    }
   
   func requestDiscoverability(completion: (discoverable: Bool) -> ()) {
     //replace this stub
+    //1
+    container.statusForApplicationPermission(.UserDiscoverability) { status, error in
+        //2 
+        if error != nil || status == CKApplicationPermissionStatus.Denied {
+            print("Status \(status)")
+            completion(discoverable: false)
+        } else {
+            //3 
+            self.container.requestApplicationPermission(.UserDiscoverability) { status, error in
+                completion(discoverable: status == .Granted)
+            }
+        }
+    }
     completion(discoverable: false)
   }
   
   func userInfo(completion: (userInfo: CKDiscoveredUserInfo!, error: NSError!)->()) {
+    print("UserInfo Method Called")
     requestDiscoverability() { discoverable in
       self.userID() { recordID, error in
         if error != nil {

@@ -42,10 +42,12 @@ class SettingsViewController: UITableViewController {
     Model.sharedInstance().userInfo.loggedInToICloud { //1
       accountStatus, error in
       var text  = "Not logged in to iCloud" //2
+        print("Account Status: \(accountStatus.rawValue) & error \(error)")
       if accountStatus == .Available { //3
         text = "Logged in to iCloud"
         Model.sharedInstance().userInfo.userInfo() { //4
           userInfo, error in
+            print("UserInfo called \(userInfo)")
           if userInfo != nil {
             dispatch_async(dispatch_get_main_queue()) {
               let nameText = "Logged in as \(userInfo.firstName) \(userInfo.lastName)" //5
