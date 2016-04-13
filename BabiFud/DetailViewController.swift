@@ -41,6 +41,7 @@ class DetailViewController: UITableViewController, UISplitViewControllerDelegate
   @IBOutlet var addPhotoButton: UIButton!
   @IBOutlet var photoScrollView: UIScrollView!
   @IBOutlet var noteTextView: UITextView!
+    
   
   var detailItem: Establishment! {
   didSet {
@@ -269,6 +270,47 @@ class DetailViewController: UITableViewController, UISplitViewControllerDelegate
   
   func addPhotoToEstablishment(photo: UIImage) {
     //replace this stub
+    //1
+    let fileURL = generateFileURL()
+    let data = UIImageJPEGRepresentation(photo, 0.9)
+
+    //Error is caught using Swift 2.0 syntax. error is automatically generated, no longer a need to specify.
+    do {
+       let wrote = try data?.writeToURL(fileURL, options: .AtomicWrite)
+    } catch {
+        UIAlertView(title: "Error Saving Photo", message: "\(error)", delegate: nil, cancelButtonTitle: "Ok").show()
+        return
+    }
+    
+    //2
+    let asset = CKAsset(fileURL: fileURL)
+    //3
+    let ref = CKReference(record: self.detailItem.record, action: .DeleteSelf)
+    //4
+    Model.sharedInstance().userInfo.userID() { userID, error in
+        if let userRecordID = userID {
+            let userRef = CKReference(recordID: userRecordID, action: .None)
+            //5 
+            let record = CKRecord(recordType: "EstablishmentPhoto")
+            record.setObject(asset, forKey: "Photo")
+            //6
+            record.setObject(ref, forKey: "Establishment")
+            record.setObject(userRef, forKey: "User")
+            //7 
+            self.detailItem.database.saveRecord(record) { record, error in
+                if error == nil {
+                    //8
+                    self.addNewPhotoToScrollView(photo)
+                }
+                do {
+                    try NSFileManager.defaultManager().removeItemAtURL(fileURL)
+                } catch {
+                    
+                }
+            }
+        }
+    }
+    
   }
   
 }
